@@ -1,0 +1,8 @@
+ABONNEMENT: id_abonnement, type, prix, date_debut, date_fin
+SOUSCRIT, 01 UTILISATEUR, 0N ABONNEMENT
+
+UTILISATEUR: id_utilisateur, nom, prenom, email, mot_de_passe, role
+RESERVE, 0N UTILISATEUR, 0N COURS: id_reservation, date_reservation, id_utilisateur, id_cours
+
+ENSEIGNE, 0N UTILISATEUR, 11 COURS
+COURS: id_cours, titre, description, date, heure, duree, nombre_max_participants
