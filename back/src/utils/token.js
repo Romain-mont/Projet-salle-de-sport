@@ -9,15 +9,16 @@ const { algorithm, audience, expiresIn, issuer, secret } = config.auth.accessTok
  * @param {Object} payload - Les données à inclure dans le token (ex : id, username).
  * @returns {string} - Le token JWT signé.
  */
+
 export function generateJwtToken(payload) {
+    console.log("Durée d'expiration (expiresIn) :", expiresIn); // Ajoutez ce log
     return jwt.sign(payload, secret, {
         algorithm,
         audience,
-        expiresIn,
+        expiresIn, // Vérifiez que cette valeur est correcte
         issuer,
     });
 }
-
 /**
  * Vérifie et décode un token JWT.
  * @param {string} token - Le token JWT à vérifier.
