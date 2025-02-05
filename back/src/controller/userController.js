@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Users, Subscription } from "../modele/Associations.js";
 import sanitize from "sanitize-html";
 import Joi from "joi";
+import { generateAuthenticationToken } from "../utils/token.js";
 
 const userController = {
     // Récupérer tous les utilisateurs avec leur abonnement
@@ -173,7 +174,45 @@ const userController = {
         } catch (error) {
             next(error);
         }
-    }
+    },
+    async login(req, res, next) {
+        const { email, password } = req.body;
+        console.log("email", email, "password", password);
+        
+        try {
+            // Vérifiez si l'utilisateur existe
+            const user = await Users.findOne({ where: { email } });
+            
+            
+            if (!user) {
+                return res.status(404).json({ message: "Email ou mot de passe incorrect." });
+            }
+
+            // if (password !== user.password) {
+            //     return res.status(401).json({ message: "Email ou mot de passe incorrect." });
+            // }
+            //Vérifiez le mot de passe
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({ message: "Email ou mot de passe incorrect." });
+            }
+
+
+            // Générer un token JWT
+            const tokenData = generateAuthenticationToken({
+                id: user.id,
+                username: user.first_name,
+            });
+
+            res.json({
+                message: "Connexion réussie.",
+                token: tokenData.accessToken.token,
+                expiresAt: tokenData.accessToken.expiresAt,
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
 };
 
 export { userController };

@@ -9,11 +9,10 @@ INSERT INTO "subscription" (type, price, start_date, end_date) VALUES
 
 -- Insertion des utilisateurs
 INSERT INTO "users" (first_name, last_name, email, password, role, subscription_id) VALUES
-('Alice', 'Dupont', 'alice.dupont@example.com', 'testpassword1', 'subscriber', 1),
-('Bob', 'Martin', 'bob.martin@example.com', 'testpassword2', 'teacher', NULL),
-('Charlie', 'Durand', 'charlie.durand@example.com', 'testpassword3', 'admin', NULL),
-('David', 'Lemoine', 'david.lemoine@example.com', 'testpassword4', 'subscriber', 2);
-
+('Alice', 'Dupont', 'alice.dupont@example.com', '$2b$10$bZEe2Kf0vZqkDGaFCIAygu8Hf5xtvqD9dM.uLIZA0nvQli.UiLFFK', 'subscriber', 1), -- Mot de passe : testpassword1
+('Bob', 'Martin', 'bob.martin@example.com', '$2b$10$FCZhptyaKm2WxPrk6gyO9eBsPZ3UI6js63zWQ6JkeXgQkbCSYfRYy', 'teacher', NULL), -- Mot de passe : testpassword2
+('Charlie', 'Durand', 'charlie.durand@example.com', '$2b$10$o7bRTMeW5NBUs/4aGHHXtO0v6ytLIrWZSzKdTfCaJwL4IudkqYtTW', 'admin', NULL), -- Mot de passe : testpassword3
+('David', 'Lemoine', 'david.lemoine@example.com', '$2b$10$dqm.fyKmO/KpArkQksqFY.LMoeWjWyVKvCq9ao6hkDb.P5qXqsA.2', 'subscriber', 2); -- Mot de passe : testpassword4
 -- Insertion des cours
 INSERT INTO "course" (title, description, date, time, duration, max_participants, teacher_id) VALUES
 ('Yoga Matinal', 'Séance de yoga pour bien démarrer la journée', CURRENT_DATE + INTERVAL '10 days', '08:00:00', '1 hour'::INTERVAL, 10, 2),
