@@ -227,9 +227,6 @@ const userController = {
 					.json({ message: "Email ou mot de passe incorrect." });
 			}
 
-			// if (password !== user.password) {
-			//     return res.status(401).json({ message: "Email ou mot de passe incorrect." });
-			// }
 			//Vérifiez le mot de passe
 			const isPasswordValid = await bcrypt.compare(password, user.password);
 			if (!isPasswordValid) {
