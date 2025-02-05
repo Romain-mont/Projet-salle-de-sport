@@ -3,7 +3,8 @@ import { verifyJwtToken } from "../utils/token.js";
 export function authenticateToken(req, res, next) {
     const authHeader = req.headers.authorization; // Récupère le header Authorization
     const token = authHeader && authHeader.split(" ")[1]; // Extrait le token après "Bearer"
-
+    console.log("token", token, "authHeader", authHeader);
+    
     if (!token) {
         return res.status(401).json({ message: "Accès non autorisé. Aucun token fourni." });
     }

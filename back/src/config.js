@@ -10,7 +10,7 @@ export default {
       type: "Bearer", // Type de token (généralement Bearer)
       algorithm: process.env.ACCESS_TOKEN_ALGORITHM || "HS256", // Algorithme utilisé pour signer le JWT
       secret: process.env.ACCESS_TOKEN_SECRET || "Acc3ssTok3nS3c3t!", // Clé secrète pour signer les tokens
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_MS || 3600, // Durée de validité du token en secondes (par défaut : 1 heure)
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRES || 3600, // Durée de validité du token en secondes (par défaut : 1 heure)
       audience: process.env.ACCESS_TOKEN_AUDIENCE || "my_backend_api", // Audience du token (à qui il est destiné)
       issuer: process.env.ACCESS_TOKEN_ISSUER || "my_authentication_server", // Émetteur du token (qui l'a généré)
     },

@@ -42,8 +42,8 @@ export function verifyJwtToken(token) {
  * @param {number} expiresInMS - Durée d'expiration en millisecondes.
  * @returns {string} - Date d'expiration au format ISO.
  */
-export function createExpirationDate(expiresInMS) {
-    const expirationDate = new Date(Date.now() + expiresInMS * 1000);
+export function createExpirationDate(expiresInSec) {
+    const expirationDate = new Date(Date.now() + expiresInSec * 1000); // Conversion correcte
     return expirationDate.toISOString();
 }
 
