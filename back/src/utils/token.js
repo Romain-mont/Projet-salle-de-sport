@@ -4,6 +4,22 @@ import config from "../config.js";
 // Extraire les paramètres du fichier de configuration
 const { algorithm, audience, expiresIn, issuer, secret } = config.auth.accessToken;
 
+export function generateAuthenticationToken(user) {
+    const payload = {
+        id: user.id,
+        username: user.username,
+    };
+
+    return {
+        accessToken: {
+            token: generateJwtToken(payload),
+            type: "Bearer",
+            expiresAt: createExpirationDate(expiresIn), // Date d'expiration
+            expiresIn: expiresIn, 
+        },
+    };
+}
+
 /**
  * Génère un token JWT pour un utilisateur donné.
  * @param {Object} payload - Les données à inclure dans le token (ex : id, username).
@@ -52,18 +68,3 @@ export function createExpirationDate(expiresInSec) {
  * @param {Object} user - Les informations de l'utilisateur (ex : id, username).
  * @returns {Object} - Objet contenant le token et ses métadonnées.
  */
-export function generateAuthenticationToken(user) {
-    const payload = {
-        id: user.id,
-        username: user.username,
-    };
-
-    return {
-        accessToken: {
-            token: generateJwtToken(payload),
-            type: "Bearer",
-            expiresAt: createExpirationDate(expiresIn), // Date d'expiration
-            expiresInMS: expiresIn, // Durée en millisecondes
-        },
-    };
-}

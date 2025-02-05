@@ -19,13 +19,8 @@ const courseController = {
 	async show(req, res, next) {
 		try {
 			// ! valider le nombre entier sur la route avec la regex (\\d+)
-			const id = Number.parseInt(req.params.id, 10);
-
-			// if (Number.isNaN(id))
-			if (isNaN(id)) {
-				return res.status(400).json({ message: "ID invalide." });
-			}
-
+			const{id}=req.params
+			
 			const courseFound = await Course.findByPk(id);
 
 			if (!courseFound) {
@@ -85,9 +80,10 @@ const courseController = {
 			}
 
 			// Verify if the teacher exists
+
 			const teacher = await Users.findByPk(teacher_id);
-			// ? if (teacher?.role !== "teacher")
-			if (!teacher || teacher.role !== "teacher") {
+			
+			if (teacher?.role !== "teacher") {
 				return res.status(404).json({
 					message: `Teacher with ID ${teacher_id} not found or is not a teacher.`,
 				});

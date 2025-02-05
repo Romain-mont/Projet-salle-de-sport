@@ -8,30 +8,24 @@ Créer une structure conceptuelle pour gérer les **utilisateurs**, les **abonne
 
 ## Projet : Plateforme de gestion pour une salle de sport
 
-### Description
-Le projet vise à concevoir un système permettant :
-- Aux **utilisateurs** (visiteurs, abonnés, professeurs, administrateurs) d’interagir avec la plateforme selon leurs rôles.
-- Aux **abonnés** de souscrire à des abonnements et réserver des cours.
-- Aux **professeurs** d’animer des cours et de consulter les participants.
-- Aux **administrateurs** de gérer les utilisateurs, abonnements et cours.
 
 ## Entités et relations
 
 ### Entité : UTILISATEUR
 **Attributs :**
-- `id_utilisateur`
+- `code_utilisateur`
 - `nom`
 - `prenom`
 - `email`
 - `mot_de_passe`
 - `role` (visiteur, abonné, professeur, administrateur)
-- `id_abonnement` (FK vers ABONNEMENT, nullable)
+- `code_abonnement` 
 
 ---
 
 ### Entité : ABONNEMENT
 **Attributs :**
-- `id_abonnement`
+- `code_abonnement`
 - `type` (mensuel/annuel/sans engagement)
 - `prix`
 - `date_debut`
@@ -41,21 +35,21 @@ Le projet vise à concevoir un système permettant :
 
 ### Entité : COURS
 **Attributs :**
-- `id_cours`
+- `code_cours`
 - `titre`
 - `description`
 - `date`
 - `heure`
 - `duree`
-- `id_professeur` (FK vers UTILISATEUR)
+- `code_professeur`
 
 ---
 
 ### Entité : RESERVATION (Table de liaison)
 **Attributs :**
-- `id_reservation`
-- `id_utilisateur` (FK vers UTILISATEUR)
-- `id_cours` (FK vers COURS)
+- `code_reservation`
+- `code_utilisateur` 
+- `code_cours`
 - `date_reservation`
 
 ---
@@ -75,7 +69,7 @@ Le projet vise à concevoir un système permettant :
    - Une table de liaison **RESERVATION** est nécessaire pour gérer cette relation N:N.
 
 3. **COURS et PROFESSEUR**
-   - Relation représentée par l’attribut `id_professeur` dans l’entité COURS.
+   - Relation représentée par l’attribut `code_professeur` dans l’entité COURS.
    - Un cours est animé par un seul professeur (`1,1` côté PROFESSEUR).
    - Un professeur peut animer plusieurs cours (`0,N` côté UTILISATEUR avec rôle = professeur).
 

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import Joi from "joi";
 import sanitize from "sanitize-html";
-import { Subscription, Users } from "../modele/Associations.js";
+import { Users } from "../modele/Associations.js";
 import { generateAuthenticationToken } from "../utils/token.js";
 
 const userController = {
@@ -28,12 +28,7 @@ const userController = {
 	async show(req, res, next) {
 		try {
 			//  todo valider sur la route avec la regex
-			const id = Number.parseInt(req.params.id, 10);
-
-			// Number.isNaN
-			if (isNaN(id)) {
-				return res.status(400).json({ message: "ID invalide." });
-			}
+			const {id} = req.params
 
 			const userFound = await Users.findByPk(id, {
 				include: "subscription",

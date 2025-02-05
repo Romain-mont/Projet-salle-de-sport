@@ -21,12 +21,8 @@ const subscriptionController = {
 	async show(req, res, next) {
 		// ! valider sur la route avec la regex (\\d+)
 		try {
-			// Number.parseInt
-			const id = Number.parseInt(req.params.id, 10);
-			// Number.isNaN
-			if (isNaN(id)) {
-				return res.status(400).json({ message: "ID invalide." });
-			}
+			
+			const {id}=req.params
 
 			const subscriptionFound = await Subscription.findByPk(id, {
 				include: {
