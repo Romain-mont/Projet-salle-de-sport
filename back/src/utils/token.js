@@ -11,7 +11,7 @@ const { algorithm, audience, expiresIn, issuer, secret } = config.auth.accessTok
  */
 
 export function generateJwtToken(payload) {
-    console.log("Durée d'expiration (expiresIn) :", expiresIn); // Ajoutez ce log
+
     return jwt.sign(payload, secret, {
         algorithm,
         audience,

@@ -21,7 +21,7 @@ export default {
   database: {
     host: process.env.DB_HOST || "localhost", // Hôte de la base de données
     port: process.env.DB_PORT || 5432, // Port de la base de données
-    username: process.env.DB_USER || "postgres", // Nom d'utilisateur pour la base de données
+    username: process.env.DB_UER || "postgres", // Nom d'utilisateur pour la base de données
     password: process.env.DB_PASSWORD || "password", // Mot de passe pour la base de données
     name: process.env.DB_NAME || "my_database", // Nom de la base de données
   },
