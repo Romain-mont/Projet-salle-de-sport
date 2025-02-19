@@ -19,29 +19,38 @@ const customTheme = {
 
 export function NavbarSport() {
   return (
-    <Flowbite theme={{ theme: customTheme }}>
-    <Navbar fluid rounded>
-       <NavbarToggle />
-      <NavbarBrand >
-        {/* <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" /> */}
-        <span className="self-center whitespace-nowrap font-['Bebas_Neue'] text-3xl font-semibold dark:text-white">DevFit Studio</span>
-      </NavbarBrand>
-      <div className="flex md:order-2">
-      <Button color="primary">
-            <span className="text-xl">S'inscrire</span>
-      </Button>
+    <div className="container mx-auto px-4">
+      <div className="max-w-screen-xl mx-auto">
+        <Flowbite theme={{ theme: customTheme }}>
 
-       
+        <Navbar fluid rounded className="px-2 md:px-4 lg:px-6">
+
+            <NavbarToggle className="md:hidden"/>
+            <NavbarBrand href="/" className="flex items-center">
+
+            <span className="text-2xl md:text-3xl lg:text-4xl font-['Bebas_Neue']">
+                DevFit Studio
+              </span>
+
+            </NavbarBrand>
+
+            <div className="flex md:order-2 gap-2 md:gap-4">
+              <Button className="text-sm md:text-base lg:text-lg" color="primary">
+                <span className="text-xl">S'inscrire</span>
+              </Button>
+            </div>
+
+            <NavbarCollapse className="md:flex md:space-x-4 lg:space-x-6">
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#" active>Accueil</NavbarLink>
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Nos salles</NavbarLink>
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Abonnement</NavbarLink>
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Contact</NavbarLink>
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Newsletter</NavbarLink>
+              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Se connecter</NavbarLink>
+            </NavbarCollapse>
+          </Navbar>
+        </Flowbite>
       </div>
-      <NavbarCollapse>
-          <NavbarLink href="#" active>Accueil</NavbarLink>
-          <NavbarLink href="#">Nos salles</NavbarLink>
-          <NavbarLink href="#">Abonnement</NavbarLink>
-          <NavbarLink href="#">Contact</NavbarLink>
-          <NavbarLink href="#">Newsletter</NavbarLink>
-          <NavbarLink href="#">Se connecter</NavbarLink>
-        </NavbarCollapse>
-    </Navbar>
-    </Flowbite>
+    </div>
   );
 }
