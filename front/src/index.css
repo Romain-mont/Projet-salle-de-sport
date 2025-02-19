@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    /* Variables CSS globales */
+    --color-primary: #FED703;
+    --color-secondary: #3C454D;
+    --color-gray-light: #D9D9D9;
+    --color-accent: #0077B6;
+  }
+  
+  /* Classes personnalisées réutilisables */
+  @layer components {
+    .btn-primary {
+      @apply bg-primary text-secondary px-4 py-2 rounded-lg hover:opacity-90;
+    }
+    
+    .card {
+      @apply bg-gray-light p-4 rounded-lg shadow-md;
+    }
+    
+    .section {
+      @apply bg-secondary text-white p-6;
+    }
+  }
+  

@@ -9,7 +9,18 @@ export default {
     flowbite.content()
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors : {
+        'primary': '#FED703',
+        'secondary': '#3C454D',
+        'gray-light': '#D9D9D9',
+        'accent': '#0077B6'
+      },
+      fontFamily: {
+        'title': ['Bebas Neue', 'sans-serif'],
+        'body': ['Poppins', 'sans-serif']
+      }
+    },
   },
   plugins: [
     flowbite.plugin()
