@@ -17,38 +17,41 @@ const customTheme = {
   }
 };
 
-export function NavbarSport() {
+export function ComponentNavBar() {
   return (
     <div className="container mx-auto px-4">
       <div className="max-w-screen-xl mx-auto">
+        
         <Flowbite theme={{ theme: customTheme }}>
 
-        <Navbar fluid rounded className="px-2 md:px-4 lg:px-6">
+            <Navbar fluid rounded className="px-2 md:px-4 lg:px-6">
 
-            <NavbarToggle className="md:hidden"/>
-            <NavbarBrand href="/" className="flex items-center">
+                <NavbarToggle className="md:hidden"/>
+                <NavbarBrand href="/" className="flex items-center">
 
-            <span className="text-2xl md:text-3xl lg:text-4xl font-['Bebas_Neue']">
-                DevFit Studio
-              </span>
+                <span className="text-2xl md:text-3xl lg:text-4xl font-['Bebas_Neue']">
+                    DevFit Studio
+                  </span>
 
-            </NavbarBrand>
+                </NavbarBrand>
 
-            <div className="flex md:order-2 gap-2 md:gap-4">
-              <Button className="text-sm md:text-base lg:text-lg" color="primary">
-                <span className="text-xl">S'inscrire</span>
-              </Button>
-            </div>
+                <div className="flex md:order-2 gap-2 md:gap-4">
+                  <Button className="text-sm md:text-base lg:text-lg" color="primary">
+                    <span className="text-xl">S'inscrire</span>
+                  </Button>
+                </div>
 
-            <NavbarCollapse className="md:flex md:space-x-4 lg:space-x-6">
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#" active>Accueil</NavbarLink>
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Nos salles</NavbarLink>
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Abonnement</NavbarLink>
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Contact</NavbarLink>
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Newsletter</NavbarLink>
-              <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Se connecter</NavbarLink>
-            </NavbarCollapse>
-          </Navbar>
+                <NavbarCollapse className="">
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#" active>Accueil</NavbarLink>
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Nos salles</NavbarLink>
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Abonnement</NavbarLink>
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Contact</NavbarLink>
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Newsletter</NavbarLink>
+                  <NavbarLink className="text-sm md:text-base lg:text-lg" href="#">Se connecter</NavbarLink>
+                </NavbarCollapse>
+
+              </Navbar>
+              
         </Flowbite>
       </div>
     </div>
