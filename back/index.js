@@ -5,7 +5,18 @@ import { notFound } from "./src/middlewares/notFound.js";
 import { router } from "./src/router/router.js";
 
 const app = express();
-
+app.use(
+	// on passe un objet de config à cors
+	cors({
+		// la clé origin a pour valeur un tableau qui représents la liste des URL autorisé à requêter notre serveur
+		origin: [
+			"http://localhost:5500",
+			"http://127.0.0.1:5500",
+			"http://localhost:5173",
+			"http://127.0.0.1:5173",
+		],
+	}),
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(router);
