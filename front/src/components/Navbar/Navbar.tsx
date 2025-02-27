@@ -1,18 +1,20 @@
 import {
 	Button,
+	Flowbite,
 	Navbar,
 	NavbarBrand,
 	NavbarCollapse,
-	NavbarLink,
 	NavbarToggle,
-	Flowbite,
 } from "flowbite-react";
+
+import { CustomLink } from "./CustomLink";
 
 const customTheme = {
 	navbar: {
 		link: {
 			active: {
 				on: "text-[#0077B6] border-b-2 border-[#0077B6]",
+				off: "text-sm md:text-base lg:text-lg",
 			},
 			base: "font-['Poppins'] text-xl border-b-2 border-transparent hover:border-[#0077B6]",
 		},
@@ -37,7 +39,7 @@ export function ComponentNavBar() {
 						className="px-2 md:px-4 lg:px-6 fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-[#0077B6]"
 					>
 						<NavbarToggle className="md:hidden" />
-						<NavbarBrand href="/" className="flex items-center">
+						<NavbarBrand to="/" className="flex items-center">
 							<span className="text-2xl md:text-3xl lg:text-4xl font-['Bebas_Neue']">
 								DevFit Studio
 							</span>
@@ -52,29 +54,12 @@ export function ComponentNavBar() {
 							</Button>
 						</div>
 
-						<NavbarCollapse className="">
-							<NavbarLink
-								className="text-sm md:text-base lg:text-lg"
-								href="#"
-								active
-							>
-								Accueil
-							</NavbarLink>
-							<NavbarLink className="text-sm md:text-base lg:text-lg" href="#">
-								Nos salles
-							</NavbarLink>
-							<NavbarLink className="text-sm md:text-base lg:text-lg" href="#">
-								Abonnement
-							</NavbarLink>
-							<NavbarLink className="text-sm md:text-base lg:text-lg" href="#">
-								Contact
-							</NavbarLink>
-							<NavbarLink className="text-sm md:text-base lg:text-lg" href="#">
-								Newsletter
-							</NavbarLink>
-							<NavbarLink className="text-sm md:text-base lg:text-lg" href="#">
-								Se connecter
-							</NavbarLink>
+						<NavbarCollapse>
+							<CustomLink url="/" text="Accueil" />
+							<CustomLink url="/subscribtion" text="Abonnements" />
+							<CustomLink url="/Contact" text="Contact" />
+							<CustomLink url="/Newsletter" text="Newsletter" />
+							<CustomLink url="/connect" text="Se Connecter" />
 						</NavbarCollapse>
 					</Navbar>
 				</Flowbite>

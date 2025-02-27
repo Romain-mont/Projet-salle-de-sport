@@ -1,6 +1,5 @@
 import AbonnementComponent from "../components/Abonnements/AbonnementComponent";
 import { ComponentCarousel } from "../components/Carousel/Carousel";
-import { ComponentFooter } from "../components/Footer/Footer";
 import { ComponentInfoSalle } from "../components/InfoSalleSport/InfoSalle";
 import { OffreSalleComponent } from "../components/Offres/OffresSalleComponent";
 
@@ -27,8 +26,6 @@ export default function HomePage() {
 					</div>
 				</div>
 			</main>
-
-			<ComponentFooter />
 		</div>
 	);
 }

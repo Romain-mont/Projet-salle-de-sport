@@ -1,4 +1,5 @@
-import HomePage from "./pages/HomePage";
+import { Outlet } from "react-router-dom";
+import { ComponentFooter } from "./components/Footer/Footer";
 import { ComponentNavBar } from "./components/Navbar/Navbar";
 
 function App() {
@@ -7,8 +8,10 @@ function App() {
 			<ComponentNavBar />
 			<div className="flex-1 flex flex-col gap-8 pt-[80px]">
 				{" "}
-				<HomePage />
+				<Outlet />
 			</div>
+
+			<ComponentFooter />
 		</main>
 	);
 }
