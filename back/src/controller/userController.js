@@ -28,7 +28,7 @@ const userController = {
 	async show(req, res, next) {
 		try {
 			//  todo valider sur la route avec la regex
-			const {id} = req.params
+			const { id } = req.params;
 
 			const userFound = await Users.findByPk(id, {
 				include: "subscription",
@@ -237,6 +237,7 @@ const userController = {
 			});
 
 			res.json({
+				username: user.first_name,
 				message: "Connexion réussie.",
 				token: tokenData.accessToken.token,
 				expiresAt: tokenData.accessToken.expiresAt,

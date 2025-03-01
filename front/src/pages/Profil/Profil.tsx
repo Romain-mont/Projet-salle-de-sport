@@ -1,4 +1,38 @@
+import { useEffect, useState } from "react";
+import { useUserStore } from "../../store";
+import type { IUsers } from "../../@types/types";
+
 export function ProfileComponent() {
+	const { user } = useUserStore();
+	const [profilData, setProfilData] = useState<null | IUsers>(null);
+	console.log("user", user);
+
+	useEffect(() => {
+		const getProfile = async () => {
+			try {
+				const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+					method: "GET",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${user?.jwtToken}`,
+					},
+				});
+				console.log("response bdd", response);
+
+				if (!response.ok) {
+					throw new Error("Erreur lors de la récupération du profil");
+				}
+
+				const data = await response.json();
+				setProfilData(data);
+			} catch (error) {
+				console.error("Erreur:", error);
+			}
+		};
+		if (user) getProfile();
+	}, [user]);
+
 	return (
 		<div className="flex justify-center items-center py-12 px-4">
 			<div className="bg-white rounded-lg shadow-lg max-w-md w-full overflow-hidden">
@@ -25,7 +59,10 @@ export function ProfileComponent() {
 
 				{/* Informations du profil */}
 				<div className="pt-20 pb-8 px-6 text-center">
-					<h1 className="text-2xl font-bold text-gray-800">Romain Dupont</h1>
+					<h1 className="text-2xl font-bold text-gray-800">
+						{profilData?.first_name}
+						{profilData?.last_name}
+					</h1>
 					<p className="text-gray-600 mt-1">Développeur Web Full Stack</p>
 
 					<div className="mt-8 border-t border-gray-200 pt-6">
@@ -34,25 +71,29 @@ export function ProfileComponent() {
 								<span className="text-sm text-gray-500 font-medium">
 									Prénom
 								</span>
-								<span className="text-gray-800 font-semibold mt-1">Romain</span>
+								<span className="text-gray-800 font-semibold mt-1">
+									{profilData?.first_name}
+								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Nom</span>
-								<span className="text-gray-800 font-semibold mt-1">Dupont</span>
+								<span className="text-gray-800 font-semibold mt-1">
+									{profilData?.last_name}
+								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Rôle</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									Développeur Web Full Stack
+									{profilData?.role}
 								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Email</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									romain.dupont@example.com
+									{profilData?.email}
 								</span>
 							</div>
 						</div>

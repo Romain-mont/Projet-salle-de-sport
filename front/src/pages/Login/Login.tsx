@@ -10,32 +10,41 @@ export function LoginComponent() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 
-	useEffect(() => {
-		if (user) {
-			navigate("/");
-		}
-	}, [user, navigate]);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		navigate("/");
+	// 	}
+	// }, [user, navigate]);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log("test");
 
-		const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				email,
-				password,
-			}),
-		});
-		console.log("response server", response);
-		if (response.ok) {
-			const data = await response.json();
-			login(data.username, data.token);
-		} else {
-			console.log("Echec");
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					email,
+					password,
+				}),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				console.log("data", data.username);
+
+				login(data.username, data.token);
+
+				navigate("/profile");
+			} else {
+				console.log("Echec");
+			}
+		} catch (error) {
+			// Gestion des erreurs réseau ou autres exceptions
+			console.error("Erreur lors de la tentative de connexion:", error);
 		}
 	};
 	return (
@@ -53,6 +62,7 @@ export function LoginComponent() {
 						<TextInput
 							id="email1"
 							type="email"
+							name="email"
 							placeholder="name@flowbite.com"
 							required
 							value={email}
@@ -66,6 +76,7 @@ export function LoginComponent() {
 						<TextInput
 							id="password1"
 							type="password"
+							name="password"
 							required
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
