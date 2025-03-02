@@ -237,11 +237,27 @@ const userController = {
 			});
 
 			res.json({
+				id: user.id,
 				username: user.first_name,
 				message: "Connexion réussie.",
 				token: tokenData.accessToken.token,
 				expiresAt: tokenData.accessToken.expiresAt,
 			});
+		} catch (error) {
+			next(error);
+		}
+	},
+	async getCurrentUser(req, res, next) {
+		try {
+			const userId = req.user.id;
+			const currentUser = await Users.findByPk(userId, {
+				include: "subscription",
+			});
+
+			if (!currentUser) {
+				return res.status(404).json({ message: "Utilisateur non trouvé" });
+			}
+			res.json(currentUser);
 		} catch (error) {
 			next(error);
 		}

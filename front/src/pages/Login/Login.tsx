@@ -18,7 +18,6 @@ export function LoginComponent() {
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log("test");
 
 		try {
 			const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
@@ -34,7 +33,7 @@ export function LoginComponent() {
 
 			if (response.ok) {
 				const data = await response.json();
-				console.log("data", data.username);
+				console.log("data", data);
 
 				login(data.username, data.token);
 

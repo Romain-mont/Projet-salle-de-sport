@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { userController } from "../controller/userController.js";
-import { authenticateToken } from "../middlewares/authMiddleware.js"
+import { authenticateToken } from "../middlewares/authMiddleware.js";
 
 export const router = Router();
 
 // Routes publiques
 router.post("/login", userController.login);
-
+router.get("/myProfile", authenticateToken, userController.getCurrentUser);
 
 // Routes protégées
 router.get("/users", userController.index);

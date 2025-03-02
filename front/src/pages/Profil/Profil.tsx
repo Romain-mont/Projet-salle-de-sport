@@ -5,19 +5,22 @@ import type { IUsers } from "../../@types/types";
 export function ProfileComponent() {
 	const { user } = useUserStore();
 	const [profilData, setProfilData] = useState<null | IUsers>(null);
-	console.log("user", user);
+	console.log("user", user?.jwtToken);
 
 	useEffect(() => {
 		const getProfile = async () => {
 			try {
-				const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-					method: "GET",
-					credentials: "include",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${user?.jwtToken}`,
+				const response = await fetch(
+					`${import.meta.env.VITE_API_URL}/myProfile`,
+					{
+						method: "GET",
+						credentials: "include",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${user?.jwtToken}`,
+						},
 					},
-				});
+				);
 				console.log("response bdd", response);
 
 				if (!response.ok) {
@@ -41,7 +44,7 @@ export function ProfileComponent() {
 					<div className="h-32 bg-gradient-to-r from-blue-500 to-indigo-600 relative">
 						<div className="absolute inset-0 flex items-end justify-end p-4">
 							<p className="text-white text-opacity-80 text-sm font-light">
-								Développeur depuis 2023
+								Membre depuis 2023
 							</p>
 						</div>
 					</div>
