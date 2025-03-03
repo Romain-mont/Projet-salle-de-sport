@@ -8,6 +8,7 @@ import {
 } from "flowbite-react";
 
 import { CustomLink } from "./CustomLink";
+import { useUserStore } from "../../store";
 
 const customTheme = {
 	navbar: {
@@ -29,6 +30,7 @@ const customTheme = {
 };
 
 export function ComponentNavBar() {
+	const { user } = useUserStore();
 	return (
 		<div className="container mx-auto px-4">
 			<div className="max-w-screen-xl mx-auto">
@@ -46,12 +48,16 @@ export function ComponentNavBar() {
 						</NavbarBrand>
 
 						<div className="flex md:order-2 gap-2 md:gap-4">
-							<Button
-								className="text-sm md:text-base lg:text-lg"
-								color="primary"
-							>
-								<span className="text-xl">S'inscrire</span>
-							</Button>
+							{!user ? (
+								<Button
+									className="text-sm md:text-base lg:text-lg"
+									color="primary"
+								>
+									<span className="text-xl">S'inscrire</span>
+								</Button>
+							) : (
+								<p>Bonjour {user.name}</p>
+							)}
 						</div>
 
 						<NavbarCollapse>
@@ -59,7 +65,14 @@ export function ComponentNavBar() {
 							<CustomLink url="/subscribtion" text="Abonnements" />
 							<CustomLink url="/Contact" text="Contact" />
 							<CustomLink url="/Newsletter" text="Newsletter" />
-							<CustomLink url="/connect" text="Se Connecter" />
+							{!user ? (
+								<CustomLink url="/connect" text="Se Connecter" />
+							) : (
+								<>
+									<CustomLink url="/profile" text="Mon profil" />
+									<CustomLink url="/deconnect" text="Se déconnecter" />
+								</>
+							)}
 						</NavbarCollapse>
 					</Navbar>
 				</Flowbite>

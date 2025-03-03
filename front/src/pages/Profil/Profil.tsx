@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store";
 import type { IUsers } from "../../@types/types";
+import { Navigate } from "react-router-dom";
 
 export function ProfileComponent() {
 	const { user } = useUserStore();
 	const [profilData, setProfilData] = useState<null | IUsers>(null);
-	console.log("user", user?.jwtToken);
+
+	if (!user) {
+		return <Navigate to="/connect" replace />;
+	}
 
 	useEffect(() => {
 		const getProfile = async () => {

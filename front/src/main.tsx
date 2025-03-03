@@ -1,13 +1,15 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
 import { LoginComponent } from "./pages/Login/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import { ProfileComponent } from "./pages/Profil/Profil.tsx";
 
-const root = createRoot(document.getElementById("root"));
+const routeElement = document.getElementById("root")!;
+
+const root = createRoot(routeElement);
 root.render(
 	<React.StrictMode>
 		<BrowserRouter>
