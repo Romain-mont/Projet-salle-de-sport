@@ -6,7 +6,7 @@ import {
 	NavbarCollapse,
 	NavbarToggle,
 } from "flowbite-react";
-
+import { useNavigate } from "react-router-dom";
 import { CustomLink } from "./CustomLink";
 import { useUserStore } from "../../store";
 
@@ -30,7 +30,12 @@ const customTheme = {
 };
 
 export function ComponentNavBar() {
-	const { user } = useUserStore();
+	const navigate = useNavigate();
+	const { user, logout } = useUserStore();
+	const onLogout = () => {
+		logout();
+		navigate("/");
+	};
 	return (
 		<div className="container mx-auto px-4">
 			<div className="max-w-screen-xl mx-auto">
@@ -56,7 +61,11 @@ export function ComponentNavBar() {
 									<span className="text-xl">S'inscrire</span>
 								</Button>
 							) : (
-								<p>Bonjour {user.name}</p>
+								<div className="flex items-center">
+									<p className="text-[#0077B6] font-['Poppins'] font-medium">
+										Bonjour <span className="font-bold">{user.name}</span>
+									</p>
+								</div>
 							)}
 						</div>
 
@@ -68,10 +77,19 @@ export function ComponentNavBar() {
 							{!user ? (
 								<CustomLink url="/connect" text="Se Connecter" />
 							) : (
-								<>
+								<div className="flex flex-col gap-2">
 									<CustomLink url="/profile" text="Mon profil" />
-									<CustomLink url="/deconnect" text="Se déconnecter" />
-								</>
+									<div className="flex">
+										<Button
+											color="primary"
+											size="sm"
+											className="text-xs md:text-sm w-auto inline-block self-start"
+											onClick={onLogout}
+										>
+											Se déconnecter
+										</Button>
+									</div>
+								</div>
 							)}
 						</NavbarCollapse>
 					</Navbar>

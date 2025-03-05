@@ -1,7 +1,15 @@
-import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
-import { useEffect, useState } from "react";
+import {
+	Alert,
+	Button,
+	Card,
+	Checkbox,
+	Label,
+	TextInput,
+} from "flowbite-react";
+import { useState } from "react";
 import { useUserStore } from "../../store";
 import { useNavigate } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 
 export function LoginComponent() {
 	const { user, login } = useUserStore();
@@ -9,15 +17,15 @@ export function LoginComponent() {
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-
-	// useEffect(() => {
-	// 	if (user) {
-	// 		navigate("/");
-	// 	}
-	// }, [user, navigate]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
+	const [success, setSuccess] = useState("");
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setError("");
+		setSuccess("");
+		setIsLoading(true);
 
 		try {
 			const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
@@ -31,24 +39,37 @@ export function LoginComponent() {
 				}),
 			});
 
+			const data = await response.json();
 			if (response.ok) {
-				const data = await response.json();
-				console.log("data", data);
-
+				setSuccess("Connexion réussis");
 				login(data.username, data.token);
 
-				navigate("/profile");
+				setTimeout(() => navigate("/profile"), 2000);
 			} else {
 				console.log("Echec");
+				setError(data.message || "Mot de passe ou email incorrect");
 			}
 		} catch (error) {
 			// Gestion des erreurs réseau ou autres exceptions
+			setError("Erreur de connexion au serveur.Veuillez réessayer.");
 			console.error("Erreur lors de la tentative de connexion:", error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	return (
 		<div className="flex-1 flex justify-center items-center py-12 px-4">
 			<Card className="max-w-sm w-full shadow-lg">
+				{error && (
+					<Alert color="failure" className="mb-4">
+						{error}
+					</Alert>
+				)}
+				{success && (
+					<Alert color="success" className="mb-4">
+						{success}
+					</Alert>
+				)}
 				<form
 					className="flex flex-col gap-6 p-6"
 					method="post"
@@ -66,6 +87,7 @@ export function LoginComponent() {
 							required
 							value={email}
 							onChange={(event) => setEmail(event.target.value)}
+							disabled={isLoading}
 						/>
 					</div>
 					<div>
@@ -79,14 +101,22 @@ export function LoginComponent() {
 							required
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
+							disabled={isLoading}
 						/>
 					</div>
 					<div className="flex items-center gap-2">
 						<Checkbox id="remember" />
 						<Label htmlFor="remember">Remember me</Label>
 					</div>
-					<Button type="submit" className="mt-4">
-						Submit
+					<Button type="submit" className="mt-4" disabled={isLoading}>
+						{isLoading ? (
+							<div className="flex items-center justify-center gap-2">
+								<BeatLoader size={8} color="#ffffff" loading={isLoading} />
+								<span>Connexion en cours...</span>
+							</div>
+						) : (
+							"Se connecter"
+						)}
 					</Button>
 				</form>
 			</Card>

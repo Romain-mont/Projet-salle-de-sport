@@ -7,6 +7,7 @@ import { LoginComponent } from "./pages/Login/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import { ProfileComponent } from "./pages/Profil/Profil.tsx";
 
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
 const routeElement = document.getElementById("root")!;
 
 const root = createRoot(routeElement);
