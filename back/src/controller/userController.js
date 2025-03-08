@@ -58,7 +58,7 @@ const userController = {
 			}).trim();
 			const email = sanitize(req.body.email, { allowedTags: [] }).trim();
 			const password = sanitize(req.body.password, { allowedTags: [] }).trim();
-			const confirmation = sanitize(req.body.confirmation, {
+			const confirmedPassword = sanitize(req.body.confirmedPassword, {
 				allowedTags: [],
 			}).trim();
 
@@ -71,7 +71,7 @@ const userController = {
 					.min(8)
 					.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
 					.required(),
-				confirmation: Joi.string()
+				confirmedPassword: Joi.string()
 					.valid(Joi.ref("password"))
 					.required()
 					.messages({
@@ -84,7 +84,7 @@ const userController = {
 				last_name,
 				email,
 				password,
-				confirmation,
+				confirmedPassword,
 			});
 
 			if (error) {

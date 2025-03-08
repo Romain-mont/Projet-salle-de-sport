@@ -36,6 +36,9 @@ export function ComponentNavBar() {
 		logout();
 		navigate("/");
 	};
+	const sub = () => {
+		navigate("/subscription");
+	};
 	return (
 		<div className="container mx-auto px-4">
 			<div className="max-w-screen-xl mx-auto">
@@ -57,6 +60,7 @@ export function ComponentNavBar() {
 								<Button
 									className="text-sm md:text-base lg:text-lg"
 									color="primary"
+									onClick={sub}
 								>
 									<span className="text-xl">S'inscrire</span>
 								</Button>
@@ -75,7 +79,7 @@ export function ComponentNavBar() {
 							<CustomLink url="/Contact" text="Contact" />
 							<CustomLink url="/Newsletter" text="Newsletter" />
 							{!user ? (
-								<CustomLink url="/connect" text="Se Connecter" />
+								<CustomLink url="/login" text="Se Connecter" />
 							) : (
 								<div className="flex flex-col gap-2">
 									<CustomLink url="/profile" text="Mon profil" />
