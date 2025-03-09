@@ -75,9 +75,9 @@ export function ComponentNavBar() {
 
 						<NavbarCollapse>
 							<CustomLink url="/" text="Accueil" />
-							<CustomLink url="/subscribtion" text="Abonnements" />
-							<CustomLink url="/Contact" text="Contact" />
-							<CustomLink url="/Newsletter" text="Newsletter" />
+							<CustomLink url="/abonnement" text="Abonnements" />
+							<CustomLink url="/contact" text="Contact" />
+							<CustomLink url="/newsletter" text="Newsletter" />
 							{!user ? (
 								<CustomLink url="/login" text="Se Connecter" />
 							) : (

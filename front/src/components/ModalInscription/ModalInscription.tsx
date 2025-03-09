@@ -13,7 +13,7 @@ export function ModalInscription({ setStepCount }: ModalInscriptionProps) {
 
 	const handleContinue = () => {
 		setOpenModal(false);
-		setStepCount(1); // Cette fonction pourrait faire défiler jusqu'à la section des abonnements
+		setStepCount(1);
 	};
 
 	const handleClose = () => {

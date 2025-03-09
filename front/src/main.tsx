@@ -7,6 +7,7 @@ import { LoginComponent } from "./pages/Login/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import { ProfileComponent } from "./pages/Profil/Profil.tsx";
 import { InscriptionComponent } from "./pages/Inscription/Inscription.tsx";
+import AbonnementComponent from "./components/Abonnements/AbonnementComponent.tsx";
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 const routeElement = document.getElementById("root")!;
@@ -18,7 +19,7 @@ root.render(
 			<Routes>
 				<Route element={<App />}>
 					<Route path="/" element={<HomePage />} />
-					<Route path="/abonnement" />
+					<Route path="/abonnement" element={<AbonnementComponent />} />
 					<Route path="/profile" element={<ProfileComponent />} />
 					<Route path="/login" element={<LoginComponent />} />
 					<Route path="/subscription" element={<InscriptionComponent />} />

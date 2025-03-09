@@ -1,11 +1,20 @@
 import { Button } from "flowbite-react";
 
 type InfoAbonnement = {
+	id: number;
 	type: string;
 	price: number;
+	bouttonChange: number;
+	onSelectSubscription: (id: number, type: string, price: number) => void;
 };
 
-export default function Abonnement({ type, price }: InfoAbonnement) {
+export default function Abonnement({
+	id,
+	type,
+	price,
+	bouttonChange,
+	onSelectSubscription,
+}: InfoAbonnement) {
 	return (
 		<div className="w-full md:flex-1 bg-[#3C454D] rounded-[15px] p-6 flex flex-col">
 			<h2 className="text-2xl font-bold text-white mb-4">{type}</h2>
@@ -17,9 +26,20 @@ export default function Abonnement({ type, price }: InfoAbonnement) {
 			</div>
 
 			<div className="mt-auto">
-				<Button color="primary" className="w-full text-lg py-3">
-					S'abonner maintenant
-				</Button>
+				{bouttonChange === 0 && (
+					<Button color="primary" className="w-full text-lg py-3">
+						S'abonner maintenant
+					</Button>
+				)}
+				{bouttonChange === 1 && (
+					<Button
+						color="success"
+						className="w-full text-lg py-3"
+						onClick={() => onSelectSubscription(id, type, price)}
+					>
+						Choisir cette formule
+					</Button>
+				)}
 			</div>
 		</div>
 	);

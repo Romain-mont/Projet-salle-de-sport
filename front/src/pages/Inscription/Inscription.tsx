@@ -3,6 +3,7 @@ import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ModalInscription } from "../../components/ModalInscription/ModalInscription";
+import AbonnementComponent from "../../components/Abonnements/AbonnementComponent";
 
 export function InscriptionComponent() {
 	const navigate = useNavigate();
@@ -15,6 +16,7 @@ export function InscriptionComponent() {
 	const [agreeTerms, setAgreeTerms] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
+	const [userId, setUserId] = useState<number | null>(null);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -44,6 +46,7 @@ export function InscriptionComponent() {
 
 			if (response.ok) {
 				setSuccess("Votre compte a bien été crée");
+				setUserId(data.userId);
 			} else {
 				setError(data.message);
 			}
@@ -153,7 +156,16 @@ export function InscriptionComponent() {
 						</Link>
 					</Label>
 				</div>
-				<Button type="submit">S'inscrire</Button>
+				{stepCount === 0 && <Button type="submit">S'inscrire</Button>}
+				{stepCount === 1 && (
+					<div>
+						<h1 className="text-4xl md:text-5xl font-bold text-center w-full mb-8 font-['Bebas_Neue']">
+							Voici nos formules d'abonnements
+						</h1>
+
+						<AbonnementComponent bouttonChange={1} userId={userId} />
+					</div>
+				)}
 			</form>
 		</div>
 	);
