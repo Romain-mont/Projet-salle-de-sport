@@ -21,8 +21,7 @@ const subscriptionController = {
 	async show(req, res, next) {
 		// ! valider sur la route avec la regex (\\d+)
 		try {
-			
-			const {id}=req.params
+			const { id } = req.params;
 
 			const subscriptionFound = await Subscription.findByPk(id, {
 				include: {
@@ -86,9 +85,7 @@ const subscriptionController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			// Création de l'abonnement
@@ -138,9 +135,7 @@ const subscriptionController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			//  Mise à jour de l'abonnement

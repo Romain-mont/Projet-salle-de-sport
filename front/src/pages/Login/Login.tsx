@@ -7,7 +7,7 @@ import {
 	TextInput,
 } from "flowbite-react";
 import { useState } from "react";
-import { useUserStore } from "../../store";
+import { useUserStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 

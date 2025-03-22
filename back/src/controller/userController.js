@@ -69,8 +69,14 @@ const userController = {
 				email: Joi.string().email().required(),
 				password: Joi.string()
 					.min(8)
-					.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
-					.required(),
+					.pattern(
+						/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
+					)
+					.required()
+					.messages({
+						"string.pattern.base":
+							"Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial",
+					}),
 				confirmedPassword: Joi.string()
 					.valid(Joi.ref("password"))
 					.required()
@@ -78,7 +84,7 @@ const userController = {
 						"any.only": "Les mots de passe ne correspondent pas.",
 					}),
 			});
-
+			console.log("conf pass", confirmedPassword);
 			const { error } = createUserSchema.validate({
 				first_name,
 				last_name,
@@ -88,9 +94,7 @@ const userController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			//  Vérifier si l'email existe déjà
@@ -142,7 +146,9 @@ const userController = {
 				email: Joi.string().email().optional(),
 				password: Joi.string()
 					.min(8)
-					.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
+					.pattern(
+						/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
+					)
 					.optional(),
 			});
 
@@ -154,9 +160,7 @@ const userController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			//  Vérifier si l'email existe déjà

@@ -1,32 +1,56 @@
 import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ModalInscription } from "../../components/ModalInscription/ModalInscription";
 import AbonnementComponent from "../../components/Abonnements/AbonnementComponent";
+import useAuthStore from "../../store/useAuthStore";
+import { translateError } from "../../utils/errorFunction";
 
 export function InscriptionComponent() {
-	const navigate = useNavigate();
-	const [stepCount, setStepCount] = useState<number>(0);
-	const [email, setEmail] = useState<string>("");
+	console.log("InscriptionComponent rendu");
+
+	// État local pour le formulaire d'inscription
 	const [first_name, setFirstName] = useState<string>("");
 	const [last_name, setLastName] = useState<string>("");
+	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 	const [agreeTerms, setAgreeTerms] = useState(false);
-	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
-	const [userId, setUserId] = useState<number | null>(null);
 
+	// Récupération des données et actions depuis le store
+	const currentStep = useAuthStore((state) => {
+		console.log("Sélecteur currentStep appelé");
+		return state.currentStep;
+	});
+
+	const error = useAuthStore((state) => {
+		console.log("Sélecteur error appelé");
+		return state.error;
+	});
+
+	const success = useAuthStore((state) => {
+		console.log("Sélecteur success appelé");
+		return state.success;
+	});
+
+	const setUserId = useAuthStore((state) => state.setUserId);
+	const setError = useAuthStore((state) => state.setError);
+	const setSuccess = useAuthStore((state) => state.setSuccess);
+
+	// Fonction pour gérer la soumission du formulaire
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		console.log("Soumission du formulaire d'inscription");
+
 		setError("");
 		setSuccess("");
+
 		try {
 			if (!agreeTerms) {
 				setError("Vous devez accepter les conditions d'utilisation");
 				return;
 			}
+
 			const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
 				method: "POST",
 				headers: {
@@ -40,18 +64,23 @@ export function InscriptionComponent() {
 					confirmedPassword,
 				}),
 			});
-			const data = await response.json();
 
-			console.log("data", data);
+			const data = await response.json();
+			console.log("Réponse de l'API:", data);
 
 			if (response.ok) {
-				setSuccess("Votre compte a bien été crée");
-				setUserId(data.userId);
+				setSuccess("Votre compte a bien été créé");
+				setUserId(data.user.id);
+				console.log("ID utilisateur défini:", data.user.id);
 			} else {
-				setError(data.message);
+				setError(translateError(data.message));
 			}
 		} catch (error) {
-			setError("Erreur de connexion au serveur.Veuillez réessayer.");
+			setError(
+				translateError(
+					"Une erreur est survenue lors de la connexion au serveur",
+				),
+			);
 			console.error("Erreur lors de la tentative de connexion:", error);
 		}
 	};
@@ -64,7 +93,7 @@ export function InscriptionComponent() {
 						{error}
 					</Alert>
 				)}
-				{success && <ModalInscription setStepCount={setStepCount} />}
+				{success && <ModalInscription />}
 			</div>
 
 			<form
@@ -156,14 +185,13 @@ export function InscriptionComponent() {
 						</Link>
 					</Label>
 				</div>
-				{stepCount === 0 && <Button type="submit">S'inscrire</Button>}
-				{stepCount === 1 && (
+				{currentStep === 0 && <Button type="submit">S'inscrire</Button>}
+				{currentStep === 1 && (
 					<div>
 						<h1 className="text-4xl md:text-5xl font-bold text-center w-full mb-8 font-['Bebas_Neue']">
 							Voici nos formules d'abonnements
 						</h1>
-
-						<AbonnementComponent bouttonChange={1} userId={userId} />
+						<AbonnementComponent />
 					</div>
 				)}
 			</form>

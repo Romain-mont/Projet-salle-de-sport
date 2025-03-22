@@ -2,21 +2,28 @@ import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/useAuthStore";
 
-type ModalInscriptionProps = {
-	setStepCount: React.Dispatch<React.SetStateAction<number>>;
-};
+export function ModalInscription() {
+	console.log("ModalInscription rendu");
 
-export function ModalInscription({ setStepCount }: ModalInscriptionProps) {
 	const [openModal, setOpenModal] = useState(true);
 	const navigate = useNavigate();
 
+	// Récupération de l'action setCurrentStep depuis le store
+	const setCurrentStep = useAuthStore((state) => {
+		console.log("Sélecteur setCurrentStep appelé");
+		return state.setCurrentStep;
+	});
+
 	const handleContinue = () => {
+		console.log("Continuation vers l'étape des abonnements");
 		setOpenModal(false);
-		setStepCount(1);
+		setCurrentStep(1);
 	};
 
 	const handleClose = () => {
+		console.log("Fermeture de la modale et redirection vers login");
 		setOpenModal(false);
 		navigate("/login");
 	};

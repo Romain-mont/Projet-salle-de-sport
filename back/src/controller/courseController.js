@@ -19,8 +19,8 @@ const courseController = {
 	async show(req, res, next) {
 		try {
 			// ! valider le nombre entier sur la route avec la regex (\\d+)
-			const{id}=req.params
-			
+			const { id } = req.params;
+
 			const courseFound = await Course.findByPk(id);
 
 			if (!courseFound) {
@@ -74,15 +74,13 @@ const courseController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			// Verify if the teacher exists
 
 			const teacher = await Users.findByPk(teacher_id);
-			
+
 			if (teacher?.role !== "teacher") {
 				return res.status(404).json({
 					message: `Teacher with ID ${teacher_id} not found or is not a teacher.`,
@@ -151,9 +149,7 @@ const courseController = {
 			});
 
 			if (error) {
-				return res.status(400).json({
-					message: `Validation error: ${error.details.map((err) => err.message).join(", ")}`,
-				});
+				return next(error);
 			}
 
 			// Update the course

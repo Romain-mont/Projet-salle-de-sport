@@ -1,4 +1,5 @@
 import { Button, Modal } from "flowbite-react";
+import useAuthStore from "../../store/useAuthStore";
 
 type ConfirmSubscriptionModalProps = {
 	show: boolean;
@@ -11,10 +12,26 @@ type ConfirmSubscriptionModalProps = {
 export function ModalConfirmSubscription({
 	show,
 	onClose,
-	onConfirm,
 	subscriptionType,
 	subscriptionPrice,
 }: ConfirmSubscriptionModalProps) {
+	console.log("ModalConfirmSubscription rendu avec:", {
+		show,
+		subscriptionType,
+		subscriptionPrice,
+	});
+
+	// Récupération de l'action subscribeUser depuis le store
+	const subscribeUser = useAuthStore((state) => {
+		console.log("Sélecteur subscribeUser appelé");
+		return state.subscribeUser;
+	});
+	const handleConfirm = async () => {
+		console.log("Confirmation de l'abonnement dans la modale");
+		await subscribeUser();
+		onClose();
+		console.log("Abonnement confirmé et modale fermée");
+	};
 	return (
 		<Modal show={show} onClose={onClose} size="md">
 			<Modal.Header className="border-b border-gray-200 !p-6">
@@ -36,7 +53,7 @@ export function ModalConfirmSubscription({
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Button color="success" onClick={onConfirm}>
+				<Button color="success" onClick={handleConfirm}>
 					Confirmer
 				</Button>
 				<Button color="gray" onClick={onClose}>

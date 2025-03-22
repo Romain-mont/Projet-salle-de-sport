@@ -1,84 +1,54 @@
+import { useEffect } from "react";
 import { ModalConfirmSubscription } from "../ModalInscription/ModalConfirmSub";
 import Abonnement from "./Abonnement";
-import { useState, useEffect } from "react";
+import useAuthStore from "../../store/useAuthStore";
 
-type Subscription = {
-	id: number;
-	type: string;
-	price: number;
-};
+export default function AbonnementComponent() {
+	console.log("AbonnementComponent rendu");
 
-type AbonnementComponentProps = {
-	bouttonChange?: number;
-	userId?: number | null;
-};
+	// Récupération des données et actions depuis le store
+	const subscriptions = useAuthStore((state) => {
+		console.log("Sélecteur subscriptions appelé");
+		return state.subscriptions;
+	});
+	const selectedSubscription = useAuthStore((state) => {
+		console.log("Sélecteur selectedSubscription appelé");
+		return state.selectedSubscription;
+	});
+	const showSubscriptionModal = useAuthStore((state) => {
+		console.log("Sélecteur showSubscriptionModal appelé");
+		return state.showSubscriptionModal;
+	});
+	const fetchSubscriptions = useAuthStore((state) => state.fetchSubscriptions);
+	const selectSubscription = useAuthStore((state) => state.selectSubscription);
+	const setShowSubscriptionModal = useAuthStore(
+		(state) => state.setShowSubscriptionModal,
+	);
+	const subscribeUser = useAuthStore((state) => state.subscribeUser);
 
-export default function AbonnementComponent({
-	bouttonChange = 0,
-	userId,
-}: AbonnementComponentProps) {
-	const [data, setData] = useState<Subscription[]>([]);
-	const [showModal, setShowModal] = useState(false);
-	const [selectedSubscription, setSelectedSubscription] = useState<{
-		id: number;
-		type: string;
-		price: number;
-	} | null>(null);
-
+	// Chargement des abonnements au montage du composant
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/subscription`,
-				);
-				const data = await response.json();
-				setData(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchData();
-	}, []);
+		console.log("useEffect: Chargement des abonnements");
+		fetchSubscriptions();
+	}, [fetchSubscriptions]);
 
+	// Fonction pour sélectionner un abonnement
 	const handleSelectSubscription = (
 		id: number,
 		type: string,
 		price: number,
 	) => {
-		setSelectedSubscription({ id, type, price });
-		setShowModal(true);
+		console.log(
+			`handleSelectSubscription appelé avec id: ${id}, type: ${type}, price: ${price}`,
+		);
+		selectSubscription({ id, type, price });
 	};
 
-	const handleConfirmSubscription = async () => {
-		if (!selectedSubscription || !userId) return;
-
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/users/${userId}/subscription/${selectedSubscription.id}`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				},
-			);
-
-			const result = await response.json();
-
-			if (response.ok) {
-				// Gérer le succès (redirection, notification, etc.)
-				console.log("Abonnement souscrit avec succès !", result);
-			} else {
-				// Gérer l'erreur
-				console.error("Erreur lors de la souscription :", result.message);
-				// Afficher un message d'erreur à l'utilisateur
-			}
-		} catch (error) {
-			console.error("Erreur de connexion :", error);
-		}
-
-		setShowModal(false);
-	};
+	console.log("État actuel:", {
+		subscriptions,
+		selectedSubscription,
+		showSubscriptionModal,
+	});
 
 	return (
 		<div className="w-full flex flex-col gap-6">
@@ -86,22 +56,28 @@ export default function AbonnementComponent({
 				Nos abonnements
 			</h1>
 			<div className="flex flex-col md:flex-row gap-6 w-full">
-				{data.map((sub) => (
+				{subscriptions.map((sub) => (
 					<Abonnement
 						key={sub.id}
 						id={sub.id}
 						type={sub.type}
 						price={sub.price}
-						bouttonChange={bouttonChange}
+						bouttonChange={1}
 						onSelectSubscription={handleSelectSubscription}
 					/>
 				))}
 			</div>
 			{selectedSubscription && (
 				<ModalConfirmSubscription
-					show={showModal}
-					onClose={() => setShowModal(false)}
-					onConfirm={handleConfirmSubscription}
+					show={showSubscriptionModal}
+					onClose={() => {
+						console.log("Fermeture de la modale de confirmation");
+						setShowSubscriptionModal(false);
+					}}
+					onConfirm={() => {
+						console.log("Confirmation de l'abonnement");
+						subscribeUser();
+					}}
 					subscriptionType={selectedSubscription.type}
 					subscriptionPrice={selectedSubscription.price}
 				/>

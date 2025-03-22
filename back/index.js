@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { notFound } from "./src/middlewares/notFound.js";
 import { router } from "./src/router/router.js";
+import { errorHandler } from "./src/middlewares/errorHandler.js";
 
 const app = express();
 app.use(
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(router);
 app.use(notFound);
+app.use(errorHandler);
 
 const port = process.env.PORT;
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUserStore } from "../../store";
+import { useUserStore } from "../../store/useAuthStore";
 import type { IUsers } from "../../@types/types";
 import { Navigate } from "react-router-dom";
 

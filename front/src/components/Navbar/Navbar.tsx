@@ -8,7 +8,7 @@ import {
 } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { CustomLink } from "./CustomLink";
-import { useUserStore } from "../../store";
+import { useUserStore } from "../../store/useAuthStore";
 
 const customTheme = {
 	navbar: {
