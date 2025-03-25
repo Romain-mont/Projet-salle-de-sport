@@ -1,4 +1,5 @@
 import { Button } from "flowbite-react";
+import { useLocation } from "react-router-dom";
 
 type InfoAbonnement = {
 	id: number;
@@ -15,6 +16,9 @@ export default function Abonnement({
 	bouttonChange,
 	onSelectSubscription,
 }: InfoAbonnement) {
+	// const location = useLocation();
+	// const isComingFromSignup = location.pathname.includes("/inscription");
+
 	return (
 		<div className="w-full md:flex-1 bg-[#3C454D] rounded-[15px] p-6 flex flex-col">
 			<h2 className="text-2xl font-bold text-white mb-4">{type}</h2>

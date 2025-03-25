@@ -8,7 +8,7 @@ export function ProfileComponent() {
 	const [profilData, setProfilData] = useState<null | IUsers>(null);
 
 	if (!user) {
-		return <Navigate to="/connect" replace />;
+		return <Navigate to="/login" replace />;
 	}
 
 	useEffect(() => {

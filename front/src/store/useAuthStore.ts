@@ -27,6 +27,8 @@ type Subscription = {
 };
 
 type AuthState = {
+	isComingFromSignup: boolean;
+	setIsComingFromSignup: (value: boolean) => void;
 	// État du processus d'inscription
 	currentStep: number;
 	userId: number | null;
@@ -54,11 +56,9 @@ type AuthState = {
 	// Actions API
 	fetchSubscriptions: () => Promise<void>;
 	subscribeUser: () => Promise<void>;
+	reset: () => void;
 };
-
-// Création du store
-const useAuthStore = create<AuthState>((set, get) => ({
-	// État initial
+const initialState = {
 	currentStep: 0,
 	userId: null,
 	error: "",
@@ -67,6 +67,13 @@ const useAuthStore = create<AuthState>((set, get) => ({
 	selectedSubscription: null,
 	showInscriptionModal: false,
 	showSubscriptionModal: false,
+	isComingFromSignup: false,
+};
+
+// Création du store
+const useAuthStore = create<AuthState>((set, get) => ({
+	// État initial
+	...initialState,
 
 	// Implémentation des actions
 	setCurrentStep: (step) => set({ currentStep: step }),
@@ -143,6 +150,8 @@ const useAuthStore = create<AuthState>((set, get) => ({
 			setError("Une erreur est survenue lors de la connexion au serveur");
 		}
 	},
+	setIsComingFromSignup: (value) => set({ isComingFromSignup: value }),
+	reset: () => set(initialState),
 }));
 
 export default useAuthStore;

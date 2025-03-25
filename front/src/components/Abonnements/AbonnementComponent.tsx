@@ -4,19 +4,14 @@ import Abonnement from "./Abonnement";
 import useAuthStore from "../../store/useAuthStore";
 
 export default function AbonnementComponent() {
-	console.log("AbonnementComponent rendu");
-
 	// Récupération des données et actions depuis le store
 	const subscriptions = useAuthStore((state) => {
-		console.log("Sélecteur subscriptions appelé");
 		return state.subscriptions;
 	});
 	const selectedSubscription = useAuthStore((state) => {
-		console.log("Sélecteur selectedSubscription appelé");
 		return state.selectedSubscription;
 	});
 	const showSubscriptionModal = useAuthStore((state) => {
-		console.log("Sélecteur showSubscriptionModal appelé");
 		return state.showSubscriptionModal;
 	});
 	const fetchSubscriptions = useAuthStore((state) => state.fetchSubscriptions);

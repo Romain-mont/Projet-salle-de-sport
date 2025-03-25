@@ -1,14 +1,13 @@
 import { Alert, Button, Checkbox, Label, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ModalInscription } from "../../components/ModalInscription/ModalInscription";
 import AbonnementComponent from "../../components/Abonnements/AbonnementComponent";
 import useAuthStore from "../../store/useAuthStore";
 import { translateError } from "../../utils/errorFunction";
+import { ModalRecapitulatif } from "../../components/ModalInscription/ModalRecapitulatif";
 
 export function InscriptionComponent() {
-	console.log("InscriptionComponent rendu");
-
 	// État local pour le formulaire d'inscription
 	const [first_name, setFirstName] = useState<string>("");
 	const [last_name, setLastName] = useState<string>("");
@@ -18,18 +17,16 @@ export function InscriptionComponent() {
 	const [agreeTerms, setAgreeTerms] = useState(false);
 
 	// Récupération des données et actions depuis le store
+	const reset = useAuthStore((state) => state.reset);
 	const currentStep = useAuthStore((state) => {
-		console.log("Sélecteur currentStep appelé");
 		return state.currentStep;
 	});
 
 	const error = useAuthStore((state) => {
-		console.log("Sélecteur error appelé");
 		return state.error;
 	});
 
 	const success = useAuthStore((state) => {
-		console.log("Sélecteur success appelé");
 		return state.success;
 	});
 
@@ -84,6 +81,9 @@ export function InscriptionComponent() {
 			console.error("Erreur lors de la tentative de connexion:", error);
 		}
 	};
+	useEffect(() => {
+		reset();
+	}, [reset]);
 
 	return (
 		<div className="flex-1 flex flex-col justify-center items-center py-12 px-4">
@@ -192,6 +192,15 @@ export function InscriptionComponent() {
 							Voici nos formules d'abonnements
 						</h1>
 						<AbonnementComponent />
+					</div>
+				)}
+				{currentStep === 2 && (
+					<div>
+						<ModalRecapitulatif
+							first_name={first_name}
+							last_name={last_name}
+							email={email}
+						/>
 					</div>
 				)}
 			</form>

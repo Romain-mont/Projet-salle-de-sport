@@ -8,11 +8,13 @@ import {
 } from "flowbite-react";
 import { useState } from "react";
 import { useUserStore } from "../../store/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 
 export function LoginComponent() {
 	const { user, login } = useUserStore();
+	const location = useLocation();
+	const message = location.state?.message;
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState<string>("");
@@ -58,7 +60,15 @@ export function LoginComponent() {
 		}
 	};
 	return (
-		<div className="flex-1 flex justify-center items-center py-12 px-4">
+		<div className="flex-1 flex flex-col justify-center items-center py-12 px-4">
+			{message && (
+				<div
+					className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 w-full max-w-sm"
+					role="alert"
+				>
+					<span className="block sm:inline">{message}</span>
+				</div>
+			)}
 			<Card className="max-w-sm w-full shadow-lg">
 				{error && (
 					<Alert color="failure" className="mb-4">

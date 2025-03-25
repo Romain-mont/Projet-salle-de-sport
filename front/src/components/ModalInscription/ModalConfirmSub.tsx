@@ -23,13 +23,17 @@ export function ModalConfirmSubscription({
 
 	// Récupération de l'action subscribeUser depuis le store
 	const subscribeUser = useAuthStore((state) => {
-		console.log("Sélecteur subscribeUser appelé");
 		return state.subscribeUser;
+	});
+	const setCurrentStep = useAuthStore((state) => {
+		console.log("Sélecteur setCurrentStep appelé");
+		return state.setCurrentStep;
 	});
 	const handleConfirm = async () => {
 		console.log("Confirmation de l'abonnement dans la modale");
 		await subscribeUser();
 		onClose();
+		setCurrentStep(2);
 		console.log("Abonnement confirmé et modale fermée");
 	};
 	return (
