@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage.tsx";
 import { ProfileComponent } from "./pages/Profil/Profil.tsx";
 import { InscriptionComponent } from "./pages/Inscription/Inscription.tsx";
 import AbonnementComponent from "./components/Abonnements/AbonnementComponent.tsx";
+import Planning from "./pages/Planning/Planning.tsx";
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 const routeElement = document.getElementById("root")!;
@@ -23,6 +24,7 @@ root.render(
 					<Route path="/profile" element={<ProfileComponent />} />
 					<Route path="/login" element={<LoginComponent />} />
 					<Route path="/subscription" element={<InscriptionComponent />} />
+					<Route path="/planning" element={<Planning />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

@@ -191,7 +191,7 @@ export function InscriptionComponent() {
 						<h1 className="text-4xl md:text-5xl font-bold text-center w-full mb-8 font-['Bebas_Neue']">
 							Voici nos formules d'abonnements
 						</h1>
-						<AbonnementComponent />
+						<AbonnementComponent isFromSignup={true} />
 					</div>
 				)}
 				{currentStep === 2 && (

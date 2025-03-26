@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 
 export function LoginComponent() {
-	const { user, login } = useUserStore();
+	const { login } = useUserStore();
 	const location = useLocation();
 	const message = location.state?.message;
 	const navigate = useNavigate();

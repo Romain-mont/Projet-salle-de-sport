@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useUserStore } from "../../store/useAuthStore";
+import useAuthStore, { useUserStore } from "../../store/useAuthStore";
 import type { IUsers } from "../../@types/types";
 import { Navigate } from "react-router-dom";
 
 export function ProfileComponent() {
 	const { user } = useUserStore();
 	const [profilData, setProfilData] = useState<null | IUsers>(null);
+	const setRole = useAuthStore((state) => state.setRole);
 
 	if (!user) {
 		return <Navigate to="/login" replace />;
@@ -32,13 +33,17 @@ export function ProfileComponent() {
 				}
 
 				const data = await response.json();
+				console.log("role data", data.role);
+
 				setProfilData(data);
+				setRole(data.role);
 			} catch (error) {
 				console.error("Erreur:", error);
 			}
 		};
+
 		if (user) getProfile();
-	}, [user]);
+	}, [user, setRole]);
 
 	return (
 		<div className="flex justify-center items-center py-12 px-4">

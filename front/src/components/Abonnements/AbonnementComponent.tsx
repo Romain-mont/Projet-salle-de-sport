@@ -3,7 +3,7 @@ import { ModalConfirmSubscription } from "../ModalInscription/ModalConfirmSub";
 import Abonnement from "./Abonnement";
 import useAuthStore from "../../store/useAuthStore";
 
-export default function AbonnementComponent() {
+export default function AbonnementComponent({ isFromSignup = false }) {
 	// Récupération des données et actions depuis le store
 	const subscriptions = useAuthStore((state) => {
 		return state.subscriptions;
@@ -57,7 +57,7 @@ export default function AbonnementComponent() {
 						id={sub.id}
 						type={sub.type}
 						price={sub.price}
-						bouttonChange={1}
+						bouttonChange={isFromSignup ? 1 : 0}
 						onSelectSubscription={handleSelectSubscription}
 					/>
 				))}

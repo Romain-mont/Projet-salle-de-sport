@@ -34,6 +34,7 @@ type AuthState = {
 	userId: number | null;
 	error: string;
 	success: string;
+	role: string;
 
 	// État des abonnements
 	subscriptions: Subscription[];
@@ -52,6 +53,7 @@ type AuthState = {
 	selectSubscription: (subscription: Subscription | null) => void;
 	setShowInscriptionModal: (show: boolean) => void;
 	setShowSubscriptionModal: (show: boolean) => void;
+	setRole: (role: string) => void;
 
 	// Actions API
 	fetchSubscriptions: () => Promise<void>;
@@ -68,6 +70,7 @@ const initialState = {
 	showInscriptionModal: false,
 	showSubscriptionModal: false,
 	isComingFromSignup: false,
+	role: "",
 };
 
 // Création du store
@@ -152,6 +155,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
 	},
 	setIsComingFromSignup: (value) => set({ isComingFromSignup: value }),
 	reset: () => set(initialState),
+	setRole: (role) => set({ role }),
 }));
 
 export default useAuthStore;

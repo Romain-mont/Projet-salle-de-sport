@@ -8,7 +8,7 @@ import {
 } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { CustomLink } from "./CustomLink";
-import { useUserStore } from "../../store/useAuthStore";
+import useAuthStore, { useUserStore } from "../../store/useAuthStore";
 
 const customTheme = {
 	navbar: {
@@ -30,10 +30,13 @@ const customTheme = {
 };
 
 export function ComponentNavBar() {
+	const role = useAuthStore((state) => state.role);
 	const navigate = useNavigate();
 	const { user, logout } = useUserStore();
+	console.log("Rôle utilisateur:", role);
 	const onLogout = () => {
 		logout();
+		useAuthStore.getState().setRole("");
 		navigate("/");
 	};
 	const sub = () => {
@@ -78,6 +81,9 @@ export function ComponentNavBar() {
 							<CustomLink url="/abonnement" text="Abonnements" />
 							<CustomLink url="/contact" text="Contact" />
 							<CustomLink url="/newsletter" text="Newsletter" />
+							{role === "teacher" && (
+								<CustomLink url="/planning" text="Mon Planning" />
+							)}
 							{!user ? (
 								<CustomLink url="/login" text="Se Connecter" />
 							) : (
