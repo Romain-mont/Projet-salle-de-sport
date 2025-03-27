@@ -193,6 +193,32 @@ const courseController = {
 			next(error);
 		}
 	},
+	async teacherCourse(req, res, next) {
+		try {
+			const { teacherId } = req.params;
+			const teacher = await Users.findByPk(teacherId);
+
+			if (!teacher) {
+				return res.status(404).json({ message: "Le professeur n'existe pas." });
+			}
+
+			const courses = await Course.findAll({
+				where: {
+					teacher_id: teacherId,
+				},
+			});
+
+			if (!courses.length) {
+				return res
+					.status(404)
+					.json({ message: "Aucun cours trouvé pour ce professeur." });
+			}
+
+			return res.status(200).json(courses);
+		} catch (error) {
+			next(error);
+		}
+	},
 };
 
 export { courseController };
