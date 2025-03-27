@@ -25,6 +25,20 @@ type Subscription = {
 	type: string;
 	price: number;
 };
+export interface Course {
+	id?: number;
+	title: string;
+	description: string;
+	date: string | Date;
+	time: string;
+	duration: {
+		hours: number;
+	};
+	max_participants: number;
+	teacher_id: number;
+	created_at?: string;
+	updated_at?: string | null;
+}
 
 type AuthState = {
 	isComingFromSignup: boolean;
@@ -38,6 +52,7 @@ type AuthState = {
 
 	// État des abonnements
 	subscriptions: Subscription[];
+	course: Course[];
 	selectedSubscription: Subscription | null;
 
 	// État des modales
@@ -58,6 +73,7 @@ type AuthState = {
 	// Actions API
 	fetchSubscriptions: () => Promise<void>;
 	subscribeUser: () => Promise<void>;
+	fetchCourse: () => Promise<void>;
 	reset: () => void;
 };
 const initialState = {
@@ -65,6 +81,7 @@ const initialState = {
 	userId: null,
 	error: "",
 	success: "",
+	course: [],
 	subscriptions: [],
 	selectedSubscription: null,
 	showInscriptionModal: false,
@@ -107,6 +124,21 @@ const useAuthStore = create<AuthState>((set, get) => ({
 			const data = await response.json();
 			if (response.ok) {
 				set({ subscriptions: data });
+			} else {
+				set({ error: "Impossible de charger les abonnements" });
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des abonnements:", error);
+			set({ error: "Erreur de connexion au serveur" });
+		}
+	},
+	fetchCourse: async () => {
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/course`);
+			const data = await response.json();
+			console.log("response", data);
+			if (response.ok) {
+				set({ course: data });
 			} else {
 				set({ error: "Impossible de charger les abonnements" });
 			}
