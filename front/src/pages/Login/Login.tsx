@@ -7,7 +7,7 @@ import {
 	TextInput,
 } from "flowbite-react";
 import { useState } from "react";
-import { useUserStore } from "../../store/useAuthStore";
+import useAuthStore, { useUserStore } from "../../store/useAuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 
@@ -16,6 +16,7 @@ export function LoginComponent() {
 	const location = useLocation();
 	const message = location.state?.message;
 	const navigate = useNavigate();
+	const setTeacherId = useAuthStore((state) => state.setTeacherId);
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -43,8 +44,11 @@ export function LoginComponent() {
 
 			const data = await response.json();
 			if (response.ok) {
+				console.log("data", data);
+
 				setSuccess("Connexion réussis");
 				login(data.username, data.token);
+				setTeacherId(data.id);
 
 				setTimeout(() => navigate("/profile"), 2000);
 			} else {

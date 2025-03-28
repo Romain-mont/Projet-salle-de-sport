@@ -4,14 +4,15 @@ import useAuthStore from "../../store/useAuthStore";
 import PlanningComponent from "../../components/Planning/PlanningComponent";
 
 export default function Planning() {
-	const course = useAuthStore((state) => state.course);
-	const fetchCourse = useAuthStore((state) => state.fetchCourse);
+	// Utiliser teacherCourse au lieu de course
+	const teacherCourse = useAuthStore((state) => state.teacherCourse);
+	const fetchTeacherCourse = useAuthStore((state) => state.fetchTeacherCourse);
 
 	useEffect(() => {
 		console.log("fonction");
-
-		fetchCourse();
-	}, [fetchCourse]);
+		// Utiliser fetchTeacherCourse au lieu de fetchCourse
+		fetchTeacherCourse();
+	}, [fetchTeacherCourse]);
 
 	return (
 		<div className="container mx-auto px-4 py-8 pt-20">
@@ -119,8 +120,8 @@ export default function Planning() {
 					Planning des cours
 				</h2>
 				<div className="block space-y-4">
-					{course && course.length > 0 ? (
-						course.map((lesson) => (
+					{teacherCourse && teacherCourse.length > 0 ? (
+						teacherCourse.map((lesson) => (
 							<PlanningComponent key={lesson.id} {...lesson} />
 						))
 					) : (

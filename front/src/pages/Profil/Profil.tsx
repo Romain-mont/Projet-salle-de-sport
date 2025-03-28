@@ -1,49 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useAuthStore, { useUserStore } from "../../store/useAuthStore";
-import type { IUsers } from "../../@types/types";
+
 import { Navigate } from "react-router-dom";
 
 export function ProfileComponent() {
 	const { user } = useUserStore();
-	const [profilData, setProfilData] = useState<null | IUsers>(null);
-	const setRole = useAuthStore((state) => state.setRole);
+	const profil = useAuthStore((state) => state.profil);
+	const fetchProfil = useAuthStore((state) => state.fetchProfil);
 
 	if (!user) {
 		return <Navigate to="/login" replace />;
 	}
 
 	useEffect(() => {
-		const getProfile = async () => {
-			try {
-				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/myProfile`,
-					{
-						method: "GET",
-						credentials: "include",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${user?.jwtToken}`,
-						},
-					},
-				);
-				console.log("response bdd", response);
-
-				if (!response.ok) {
-					throw new Error("Erreur lors de la récupération du profil");
-				}
-
-				const data = await response.json();
-				console.log("role data", data.role);
-
-				setProfilData(data);
-				setRole(data.role);
-			} catch (error) {
-				console.error("Erreur:", error);
-			}
-		};
-
-		if (user) getProfile();
-	}, [user, setRole]);
+		if (user) {
+			fetchProfil(user.jwtToken).catch((error) => {
+				console.error("Erreur lors du chargement du profil:", error);
+			});
+		}
+	}, [user, fetchProfil]);
 
 	return (
 		<div className="flex justify-center items-center py-12 px-4">
@@ -72,8 +47,8 @@ export function ProfileComponent() {
 				{/* Informations du profil */}
 				<div className="pt-20 pb-8 px-6 text-center">
 					<h1 className="text-2xl font-bold text-gray-800">
-						{profilData?.first_name}
-						{profilData?.last_name}
+						{profil?.first_name}
+						{profil?.last_name}
 					</h1>
 					<p className="text-gray-600 mt-1">Développeur Web Full Stack</p>
 
@@ -84,28 +59,28 @@ export function ProfileComponent() {
 									Prénom
 								</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									{profilData?.first_name}
+									{profil?.first_name}
 								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Nom</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									{profilData?.last_name}
+									{profil?.last_name}
 								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Rôle</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									{profilData?.role}
+									{profil?.role}
 								</span>
 							</div>
 
 							<div className="flex flex-col">
 								<span className="text-sm text-gray-500 font-medium">Email</span>
 								<span className="text-gray-800 font-semibold mt-1">
-									{profilData?.email}
+									{profil?.email}
 								</span>
 							</div>
 						</div>

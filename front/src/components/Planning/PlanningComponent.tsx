@@ -1,5 +1,5 @@
 import { Button } from "flowbite-react";
-import type { Course } from "../../store/useAuthStore";
+import type { Course } from "../../@types/types";
 
 type PlanningProps = Course;
 

@@ -1,17 +1,7 @@
 import { create } from "zustand";
+import type { AuthState, UserState } from "../@types/types";
 
 // actions pour gérer le login
-
-interface UserState {
-	user: User | null;
-	login: (username: string, jwtToken: string) => void;
-	logout: () => void;
-}
-
-interface User {
-	name: string;
-	jwtToken: string;
-}
 
 export const useUserStore = create<UserState>((set) => ({
 	user: null,
@@ -20,74 +10,21 @@ export const useUserStore = create<UserState>((set) => ({
 	logout: () => set({ user: null }),
 }));
 
-type Subscription = {
-	id: number;
-	type: string;
-	price: number;
-};
-export interface Course {
-	id?: number;
-	title: string;
-	description: string;
-	date: string | Date;
-	time: string;
-	duration: {
-		hours: number;
-	};
-	max_participants: number;
-	teacher_id: number;
-	created_at?: string;
-	updated_at?: string | null;
-}
-
-type AuthState = {
-	isComingFromSignup: boolean;
-	setIsComingFromSignup: (value: boolean) => void;
-	// État du processus d'inscription
-	currentStep: number;
-	userId: number | null;
-	error: string;
-	success: string;
-	role: string;
-
-	// État des abonnements
-	subscriptions: Subscription[];
-	course: Course[];
-	selectedSubscription: Subscription | null;
-
-	// État des modales
-	showInscriptionModal: boolean;
-	showSubscriptionModal: boolean;
-
-	// Actions
-	setCurrentStep: (step: number) => void;
-	setUserId: (id: number | null) => void;
-	setError: (error: string) => void;
-	setSuccess: (success: string) => void;
-	setSubscriptions: (subscriptions: Subscription[]) => void;
-	selectSubscription: (subscription: Subscription | null) => void;
-	setShowInscriptionModal: (show: boolean) => void;
-	setShowSubscriptionModal: (show: boolean) => void;
-	setRole: (role: string) => void;
-
-	// Actions API
-	fetchSubscriptions: () => Promise<void>;
-	subscribeUser: () => Promise<void>;
-	fetchCourse: () => Promise<void>;
-	reset: () => void;
-};
 const initialState = {
 	currentStep: 0,
 	userId: null,
+	teacherId: null,
 	error: "",
 	success: "",
 	course: [],
+	teacherCourse: [],
 	subscriptions: [],
 	selectedSubscription: null,
 	showInscriptionModal: false,
 	showSubscriptionModal: false,
 	isComingFromSignup: false,
 	role: "",
+	profil: null,
 };
 
 // Création du store
@@ -99,6 +36,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
 	setCurrentStep: (step) => set({ currentStep: step }),
 
 	setUserId: (id) => set({ userId: id }),
+	setTeacherId: (id) => set({ teacherId: id }),
 
 	setError: (error) => set({ error }),
 
@@ -143,7 +81,34 @@ const useAuthStore = create<AuthState>((set, get) => ({
 				set({ error: "Impossible de charger les abonnements" });
 			}
 		} catch (error) {
-			console.error("Erreur lors de la récupération des abonnements:", error);
+			console.error("Erreur lors de la récupération des cours", error);
+			set({ error: "Erreur de connexion au serveur" });
+		}
+	},
+
+	fetchTeacherCourse: async () => {
+		try {
+			const { teacherId } = get();
+			console.log("teacher", teacherId);
+
+			if (!teacherId) {
+				set({ error: "L'identifiant de l'enseignant est manquant" });
+				return;
+			}
+
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/teacher/${teacherId}/course`,
+			);
+			const data = await response.json();
+
+			if (response.ok) {
+				set({ teacherCourse: data });
+			} else {
+				console.error("Erreur API : ", data);
+				set({ error: data.message || "Impossible de charger les cours" });
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des cours :", error);
 			set({ error: "Erreur de connexion au serveur" });
 		}
 	},
@@ -187,7 +152,39 @@ const useAuthStore = create<AuthState>((set, get) => ({
 	},
 	setIsComingFromSignup: (value) => set({ isComingFromSignup: value }),
 	reset: () => set(initialState),
+
 	setRole: (role) => set({ role }),
+	setProfil: (profil) => set({ profil }),
+	fetchProfil: async (token) => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/myProfile`,
+				{
+					method: "GET",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+
+			if (!response.ok) {
+				throw new Error("Erreur lors de la récupération du profil");
+			}
+
+			const data = await response.json();
+			set({
+				profil: data,
+				role: data.role,
+			});
+
+			return data;
+		} catch (error) {
+			console.error("Erreur:", error);
+			throw error;
+		}
+	},
 }));
 
 export default useAuthStore;
